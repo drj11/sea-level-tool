@@ -18,6 +18,7 @@ def check_input():
 def scrape():
     ocean = None
     jasl = None
+    tosave = []
     with open(INV_PATH) as f:
       for row in f:
         # Set ocean from a matching line, if possible
@@ -40,7 +41,8 @@ def scrape():
         (d['jaslid'], d['toga'], d['glos'], d['station'], d['country'],
          d['lat'],  d['lon'], d['qcyears'], d['ci'], d['contributor']
         ) = l
-        print d
+        tosave.append(d)
+    scraperwiki.sqlite.save(['jaslid'], tosave, table_name='inventory')
 
 def fixie(fmt, row):
     """Parse columns out of a fixie format row."""
