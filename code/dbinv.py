@@ -17,6 +17,7 @@ def check_input():
           INV_PATH)
 
 def scrape():
+    statusok("Processing station list")
     ocean = None
     jasl = None
     tosave = []
@@ -37,15 +38,23 @@ def scrape():
             continue
         # We're between a line starting JASL and a blank line, must
         # be useful data.
-        d = {}
+        d = OrderedDict()
         l = fixie('4 4 4 17 17 6 7 9 3 23', row)
         (d['jaslid'], d['toga'], d['glos'], d['station'], d['country'],
          d['lat'],  d['lon'], d['qcyears'], d['ci'], d['contributor']
         ) = l
         tosave.append(d)
     scraperwiki.sqlite.save(['jaslid'], tosave, table_name='inventory')
-    requests.post("http://x.scraperwiki.com/api/status", dict(type='ok',
-      message="Station list has been saved"))
+    statusok("Station list has been saved")
+
+def statusok(message=None):
+    """Post a status message, if on a scraperwiki server."""
+    if not os.path.exists(os.path.join(os.environ['HOME'], "box.json")):
+        return
+    d = { type: 'ok' }
+    if message is not None:
+        d['message'] = message
+    requests.post("http://x.scraperwiki.com/api/status", d)
 
 def fixie(fmt, row):
     """Parse columns out of a fixie format row."""
