@@ -27,7 +27,7 @@ def scrape():
         # Set ocean from a matching line, if possible
         m = re.match(r'^\s+GENERAL\sINFORMATION.*\s+(\w+)\s+Ocean', row)
         if m:
-            ocean = m.group(1)
+            ocean = m.group(1).lower()
         # The data begins just after a line starting JASL, so detect that
         if not jasl:
             jasl = re.match(r'^JASL', row)
