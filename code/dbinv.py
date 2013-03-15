@@ -40,10 +40,14 @@ def scrape():
         # We're between a line starting JASL and a blank line, must
         # be useful data.
         d = OrderedDict()
+        # dummy assigments to set the ordering in the dict.
+        d['jaslid'] = None
+        d['ocean'] = None
         l = fixie('4 4 4 17 17 6 7 9 3 23', row)
         (d['jaslid'], d['toga'], d['glos'], d['station'], d['country'],
          d['lat'],  d['lon'], d['qcyears'], d['ci'], d['contributor']
         ) = l
+        d['ocean'] = ocean
         tosave.append(d)
     scraperwiki.sqlite.save(['jaslid'], tosave, table_name='inventory')
     statusok("Station list has been saved")
