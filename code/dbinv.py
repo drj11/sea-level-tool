@@ -6,6 +6,7 @@ import os
 import re
 import sys
 
+import requests
 import scraperwiki
 
 INV_PATH = 'inventry.lst' # Note: 8.3 filename
@@ -43,6 +44,8 @@ def scrape():
         ) = l
         tosave.append(d)
     scraperwiki.sqlite.save(['jaslid'], tosave, table_name='inventory')
+    requests.post("http://x.scraperwiki.com/api/status", dict(type='ok',
+      message="Station list has been saved"))
 
 def fixie(fmt, row):
     """Parse columns out of a fixie format row."""
