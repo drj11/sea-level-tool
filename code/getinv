@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# get station list
+
+curl -O ftp://ilikai.soest.hawaii.edu/rqds/inventry.lst
+curl -d status=ok -d message='fetched list' http://x.scraperwiki.com/api/status
