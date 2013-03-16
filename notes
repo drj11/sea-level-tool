@@ -1,0 +1,13 @@
+Each station series is a zip file containg one .dat file for each year:
+
+    h999a88.dat
+
+"999a" is the station identifier (jaslid column); "88" is the last two
+digits of the year. The initial letter is "h" for years 1900 to 1999, "i"
+for years 2000 onwards (to 2099?).
+
+Within each file, each day consists of two rows, presumably the first
+twelve hourly readings and the second twelve hourly readings.
+
+Missing data are recorded as 9999 (see for example i834a01.dat date
+20010727).
