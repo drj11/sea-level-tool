@@ -28,7 +28,7 @@ $ ->
         $('#station').autocomplete source: sl
         $('#fetch').on 'click', ->
           jaslid = $('#station').val().match(/^(\w+)/)[0]
-          scraperwiki.exec "tool/code/getjasl.py #{jaslid.toLowerCase()}"
+          scraperwiki.exec "tool/code/getjasl.py #{jaslid}"
 
 </script>
 </body>
