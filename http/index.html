@@ -8,6 +8,8 @@ Jasl archive.
   <label for="station">Station: </label>
   <input id="station" />
 </div>
+
+<a id="fetch" class="btn btn-primary">Fetch</a>
 <script src="http://coffeescript.org/extras/coffee-script.js"> </script>
 <link rel="stylesheet" href="//x.scraperwiki.com/vendor/style/bootstrap.min.css">
 <link rel="stylesheet" href="//x.scraperwiki.com/style/scraperwiki.css">
@@ -24,5 +26,9 @@ $ ->
       scraperwiki.sql "SELECT station,jaslid from INVENTORY", (l) ->
         sl = ("#{x.jaslid} #{x.station.trim()}" for x in l)
         $('#station').autocomplete source: sl
+        $('#fetch').on 'click', ->
+          jaslid = $('#station').val().match(/^(\w+)/)[0]
+          scraperwiki.exec "tool/code/getjasl.py #{jaslid.toLowerCase()}"
+
 </script>
 </body>
