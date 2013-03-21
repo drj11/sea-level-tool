@@ -12,7 +12,7 @@ import os
 import scraperwiki
 
 def usage(out):
-    out.write(__doc__.split('\n')[0] + '\n')
+    out.write(__doc__.split('\n')[1] + '\n')
 
 def main(argv=None):
     import sys
@@ -21,7 +21,7 @@ def main(argv=None):
         argv = sys.argv
     arg = argv[1:]
     if len(arg) < 2:
-        usage(sys.stderr.write)
+        usage(sys.stderr)
         sys.exit(4)
 
     ocean = arg[0]
