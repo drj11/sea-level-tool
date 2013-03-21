@@ -32,7 +32,9 @@ def main(argv=None):
         usage(sys.stderr)
         sys.exit(4)
 
-    id = arg[0]
+    # Database has JASL IDs in upper case, FTP server
+    # uses lower case. Here we canonicalise to lower case.
+    id = arg[0].lower()
     if ocean is None:
         ocean = oceanFromStation(id)
 
