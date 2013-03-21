@@ -42,7 +42,11 @@ def main(argv=None):
     filename = "h%s.zip" % id
     url += "/rqds/%s/hourly/%s" % (ocean, filename)
 
-    os.system("curl -O %s" % url)
+    try:
+        os.makedirs('download')
+    except OSError:
+        pass
+    os.system("cd download; curl -O %s" % url)
     scraperwiki.sqlite.save([],
       dict(time=datetime.datetime.now().isoformat(),
         verb='GET',
