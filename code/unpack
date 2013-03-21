@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Note the 'h' prefix for hourly records.
+id=h${1:?Station ID should be supplied}
+cd download
+mkdir -p "$id"
+cd "$id"
+unzip -o -q ../"${id}.zip"
