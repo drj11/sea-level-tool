@@ -3,6 +3,8 @@
 <a href="http://ilikai.soest.hawaii.edu/uhslc/jasl.html">JASL</a> archive.
 
 <p id="inventory"></p>
+<p id="download"></p>
+<p id="database"></p>
 
 <div class="ui-widget">
   <label for="station">Station: </label>
@@ -19,6 +21,11 @@
 <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 <script src="//x.scraperwiki.com/js/scraperwiki.js"></script>
 <script type="text/coffeescript">
+plural (word, n) ->
+  if n is 1
+    return word
+  return word + "s"
+
 $ ->
   scraperwiki.sql.meta (meta) ->
     if meta?.table?.inventory
@@ -29,6 +36,8 @@ $ ->
         $('#fetch').on 'click', ->
           jaslid = $('#station').val().match(/^(\w+)/)[0]
           scraperwiki.exec "tool/code/getjasl.py #{jaslid}"
-
+  scraperwiki.exec "cd download; ls *.zip 2>/dev/null", (data) ->
+    n = data.replace(/[^\n]/g, '').length
+    $('#download').text "Data for #{n} #{plural "station", n} available"
 </script>
 </body>
