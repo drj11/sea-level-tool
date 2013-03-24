@@ -26,16 +26,7 @@ plural = (word, n) ->
     return word
   return word + "s"
 
-$ ->
-  scraperwiki.sql.meta (meta) ->
-    if meta?.table?.inventory
-      $('#inventory').text "Station Inventory is available."
-      scraperwiki.sql "SELECT station,jaslid FROM inventory", (l) ->
-        sl = ("#{x.jaslid} #{x.station.trim()}" for x in l)
-        $('#station').autocomplete source: sl
-        $('#fetch').on 'click', ->
-          jaslid = $('#station').val().match(/^(\w+)/)[0]
-          scraperwiki.exec "tool/code/getjasl.py #{jaslid}"
+freshDownloadCount = () ->
   scraperwiki.exec "{ cd download && ls *.zip;} 2>/dev/null", (data) ->
     n = data.replace(/[^\n]/g, '').length
     # In *l* make a list of identifiers, trimmed to 4 if larger.
@@ -46,5 +37,18 @@ $ ->
     if stations
       stations = '(' + stations + ') '
     $('#download').html "Files for #{n} #{plural "station", n} #{stations}in <tt>download</tt> directory."
+
+$ ->
+  scraperwiki.sql.meta (meta) ->
+    if meta?.table?.inventory
+      $('#inventory').text "Station Inventory is available."
+      scraperwiki.sql "SELECT station,jaslid FROM inventory", (l) ->
+        sl = ("#{x.jaslid} #{x.station.trim()}" for x in l)
+        $('#station').autocomplete source: sl
+        $('#fetch').on 'click', ->
+          jaslid = $('#station').val().match(/^(\w+)/)[0]
+          scraperwiki.exec "tool/code/getjasl.py #{jaslid}", (s) ->
+            freshDownloadCount()
+  freshDownloadCount()
 </script>
 </body>
