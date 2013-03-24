@@ -2,6 +2,7 @@
 set -e
 [ -e tool/code ] && x=tool/code
 [ -e code ] && x=code
+set -- $(echo $1 | tr A-Z a-z)
 $x/getjasl.py "$1"
 $x/unpack "$1"
 $x/dbdat.py "$1"
