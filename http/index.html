@@ -36,11 +36,10 @@ $ ->
         $('#fetch').on 'click', ->
           jaslid = $('#station').val().match(/^(\w+)/)[0]
           scraperwiki.exec "tool/code/getjasl.py #{jaslid}"
-  scraperwiki.exec "cd download; ls *.zip 2>/dev/null", (data) ->
+  scraperwiki.exec "{ cd download && ls *.zip;} 2>/dev/null", (data) ->
     n = data.replace(/[^\n]/g, '').length
     # In *l* make a list of identifiers, trimmed to 4 if larger.
-    l = data.replace /$\n/, ''
-    l.split('\n')
+    l = data.replace(/$\n/, '').split('\n')
     if l.length > 4
       l = l[..2].concat ['...'], l[-2..]
     stations = l.join ', '
