@@ -1,5 +1,7 @@
 #!/bin/sh
 set -e
-code/getjasl.py "$1"
-code/unpack "$1"
-code/dbdat.py "$1"
+[ -e tool/code ] && x=tool/code
+[ -e code ] && x=code
+$x/getjasl.py "$1"
+$x/unpack "$1"
+$x/dbdat.py "$1"
