@@ -45,6 +45,6 @@ $ ->
     stations = l.join ', '
     if stations
       stations = '(' + stations + ') '
-    $('#download').text "Data for #{n} #{plural "station", n} #{stations}available."
+    $('#download').html "Files for #{n} #{plural "station", n} #{stations}in <tt>download</tt> directory."
 </script>
 </body>
