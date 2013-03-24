@@ -1,0 +1,5 @@
+#!/bin/sh
+set -e
+code/getjasl.py "$1"
+code/unpack "$1"
+code/dbdat.py "$1"
