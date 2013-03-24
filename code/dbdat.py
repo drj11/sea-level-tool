@@ -23,28 +23,31 @@ def check_input():
 def scrape(jaslid):
     import glob
     statusok("Processing station %s" % jaslid)
+    scraperwiki.sqlite.execute("DROP TABLE IF EXISTS obs")
     tosave = []
     for fn in glob.glob("%s/*.dat" % DAT_DIR):
         with open(fn) as f:
-            scrape1(f)
+            scrape1(f, jaslid)
 
-def scrape1(f):
+def scrape1(f, jaslid):
     """Scrape 1 .dat file (from the JASL)."""
-    # First line is some sort of header. Ignore it.
+    # First line is some sort of header; ignore it.
     f.readline()
     tosave = []
     for row in f:
-        l = fixie('4 4 9' + (12*' 4'), row)
+        l = fixie('4 5 9' + (12*' 4'), row)
         date = l[2][:8]
         pm = int(l[2][8])
         for h,v in enumerate(l[3:]):
             if v == '9999':
                 continue
             d = OrderedDict()
-            d['t'] = "%sT%04d" % (date, h+12*pm)
+            pmadj = 12 if pm > 1 else 0
+            d['jaslid'] = jaslid
+            d['t'] = "%sT%02d00" % (date, h+pmadj)
             d['z'] = int(v)
             tosave.append(d)
-    scraperwiki.sqlite.save(['t'], tosave, table_name='level')
+    scraperwiki.sqlite.save(['jaslid', 't'], tosave, table_name='obs')
     statusok("Data file %s has been saved" % f.name)
 
 def statusok(message=None):
