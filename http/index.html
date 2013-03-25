@@ -54,7 +54,12 @@ $ ->
         $('#station').autocomplete source: sl
         $('#fetch').on 'click', ->
           jaslid = $('#station').val().match(/^(\w+)/)[0]
-          scraperwiki.exec "tool/code/etl #{jaslid}", (s) ->
+          $(this).attr('disabled', true)
+            .addClass('loading')
+            .html('Fetching\u2026')
+          scraperwiki.exec "tool/code/etl #{jaslid}", (s) =>
+            $(this).removeClass('loading')
+              .html('Fetched')
             freshDownloadCount()
   freshDownloadCount()
 
