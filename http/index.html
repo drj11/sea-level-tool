@@ -1,26 +1,33 @@
+<!DOCTYPE html>
 <html>
-<body>
-<a href="http://ilikai.soest.hawaii.edu/uhslc/jasl.html">JASL</a> archive.
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="content-language" content="en" />
+    <title>Sea Level Tool</title>
+		<link rel="stylesheet" href="//x.scraperwiki.com/vendor/style/bootstrap.min.css">
+		<link rel="stylesheet" href="//x.scraperwiki.com/style/scraperwiki.css">
+    <script src="//coffeescript.org/extras/coffee-script.js"> </script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="//x.scraperwiki.com/vendor/js/bootstrap.min.js"></script>
+		<script src="//x.scraperwiki.com/js/scraperwiki.js"></script>
+  </head>
+  <body>
 
-<p id="inventory"></p>
-<p id="download"></p>
-<p id="database"></p>
+    <a href="http://ilikai.soest.hawaii.edu/uhslc/jasl.html">JASL</a> archive.
 
-<div class="ui-widget">
-  <label for="station">Station: </label>
-  <input id="station" />
-</div>
+    <p id="inventory"></p>
+    <p id="download"></p>
+    <p id="database"></p>
 
-<a id="fetch" class="btn btn-primary">Fetch</a>
-<script src="http://coffeescript.org/extras/coffee-script.js"> </script>
-<link rel="stylesheet" href="//x.scraperwiki.com/vendor/style/bootstrap.min.css">
-<link rel="stylesheet" href="//x.scraperwiki.com/style/scraperwiki.css">
-<script src="//x.scraperwiki.com/vendor/js/bootstrap.min.js"></script>
+    <div class="ui-widget">
+      <label for="station">Station: </label>
+      <input id="station" />
+    </div>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
-<script src="//x.scraperwiki.com/js/scraperwiki.js"></script>
-<script type="text/coffeescript">
+    <a id="fetch" class="btn btn-primary">Fetch</a>
+
+    <script type="text/coffeescript">
+
 plural = (word, n) ->
   if n is 1
     return word
@@ -50,5 +57,7 @@ $ ->
           scraperwiki.exec "tool/code/etl #{jaslid}", (s) ->
             freshDownloadCount()
   freshDownloadCount()
-</script>
-</body>
+
+    </script>
+  </body>
+</html>
