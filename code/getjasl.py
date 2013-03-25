@@ -6,6 +6,7 @@ Get hourly sea level data from JASL for a particular station.
 You must already know the JASL identifier
 """
 
+from collections import OrderedDict
 import datetime
 import os
 
@@ -47,10 +48,11 @@ def main(argv=None):
     except OSError:
         pass
     os.system("cd download; curl -O %s" % url)
-    scraperwiki.sqlite.save([],
-      dict(time=datetime.datetime.now().isoformat(),
-        verb='GET',
-        location=url), table_name='action')
+    d = OrderedDict()
+    d['time'] = datetime.datetime.now().isoformat()
+    d['verb'] = 'GET'
+    d['location'] = url
+    scraperwiki.sqlite.save([], d, table_name='action')
 
 def oceanFromStation(jaslid):
     """Derive the ocean from the JASL station ID by
