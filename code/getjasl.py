@@ -47,7 +47,7 @@ def main(argv=None):
         os.makedirs('download')
     except OSError:
         pass
-    os.system("cd download; curl -O %s" % url)
+    os.system("cd download; curl --silent -O %s" % url)
     d = OrderedDict()
     d['time'] = datetime.datetime.now().isoformat()
     d['verb'] = 'GET'
