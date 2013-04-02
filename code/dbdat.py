@@ -53,11 +53,13 @@ def scrape1(f, jaslid):
 def statusok(message=None):
     """Post a status message, if on a scraperwiki server. If not
     on a scraperwiki server, write the message to stdout."""
-    if not os.path.exists(os.path.join(os.environ['HOME'], "box.json")):
-        sys.stdout.write(message + '\n')
+
     d = { type: 'ok' }
     if message is not None:
         d['message'] = message
+
+    if not os.path.exists(os.path.join(os.environ['HOME'], "box.json")):
+        sys.stdout.write(message + '\n')
         return
     requests.post("http://x.scraperwiki.com/api/status", d)
 
