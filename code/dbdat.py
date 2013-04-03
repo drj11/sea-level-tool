@@ -15,16 +15,23 @@ import scraperwiki
 
 DAT_DIR = "download/%s"
 
+class Error(Exception):
+    """Some error"""
+
 def check_input():
     if not os.path.exists(DAT_DIR):
-        sys.stderr.write("Missing directory: %s\nTry running code/unpack\n" %
+        raise Error("Missing directory: %s\nTry running code/unpack\n" %
           DAT_DIR)
 
-def scrape(jaslid):
+def scrape(jaslid, opt):
+    """Scrape all of the .dat files for stations *jaslid*.
+    *opt* is a dictionary of options: opt['drop'] is used
+    to control whether the table is DROPped first."""
+
     import glob
     statusok("Processing station %s" % jaslid)
-    scraperwiki.sqlite.execute("DROP TABLE IF EXISTS obs")
-    tosave = []
+    if opt['drop']:
+        scraperwiki.sqlite.execute("DROP TABLE IF EXISTS obs")
     for fn in glob.glob("%s/*.dat" % DAT_DIR):
         with open(fn) as f:
             scrape1(f, jaslid)
@@ -80,16 +87,25 @@ def fixie(fmt, row):
     return res
 
 def main(argv=None):
-    global DAT_DIR
+    import getopt
     import sys
+
+    global DAT_DIR
+
     if argv is None:
         argv = sys.argv
-    arg = argv[1:]
+    opt,arg = getopt.getopt(argv[1:], '', ['no-drop', 'drop'])
+    dopt = dict(drop=True)
+    for o,v in opt:
+        if o == '--drop':
+            dopt['drop'] = True
+        if o == '--no-drop':
+            dopt['drop'] = False
 
     jaslid = "h" + arg[0]
     DAT_DIR %= jaslid
     check_input()
-    scrape(jaslid)
+    scrape(jaslid, dopt)
 
 if __name__ == '__main__':
     main()
