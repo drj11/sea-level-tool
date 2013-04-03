@@ -1,8 +1,32 @@
 #!/bin/sh
+
 set -e
+
+usage() {
+  echo "code/etl [--no-drop] station-id"
+}
+
+drop=--drop
+while [ $# != 0 ]
+do
+  case $1 in
+    --no-drop) drop=--no-drop; shift;;
+    --drop) drop=--drop; shift;;
+    -*) usage 1>&2; exit 99;;
+    *) break;;
+  esac
+done
+
 [ -e tool/code ] && x=tool/code
 [ -e code ] && x=code
+
 set -- $(echo $1 | tr A-Z a-z)
+
+if ! [ -e inventry.lst ]
+then
+  $x/getinv
+fi
+
 $x/getjasl.py "$1"
 $x/unpack "$1"
-$x/dbdat.py "$1"
+$x/dbdat.py "$drop" "$1"
