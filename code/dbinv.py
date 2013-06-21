@@ -17,6 +17,36 @@ def check_input():
         sys.stderr.write("Missing file: %s\nTry running code/getinv\n",
           INV_PATH)
 
+def treat_lat(l):
+    """Convert to decimal degrees, positive North. Typical input is
+    "00-32S"."""
+
+    assert l[2] == '-'
+    assert l[5] in 'SN'
+
+    return treat_latlon(l)
+
+def treat_latlon(s):
+    """Treat either lat or lon."""
+
+    l = s.split('-')
+
+    d = float(l[0])
+    m = float(l[1][:-1])
+    d += m/60.0
+    if l[1][-1] in 'WS':
+	d = -d
+    return d
+
+def treat_lon(l):
+    """Convert to decimal degrees, positive East. Typical input is
+    "158-14E"."""
+
+    assert l[3] == '-'
+    assert l[6] in 'EW'
+
+    return treat_latlon(l)
+
 def scrape():
     statusok("Processing station list")
     ocean = None
@@ -48,6 +78,8 @@ def scrape():
          d['lat'],  d['lon'], d['qcyears'], d['ci'], d['contributor']
         ) = l
         d['ocean'] = ocean
+        d['lat'] = treat_lat(d['lat'])
+        d['lon'] = treat_lon(d['lon'])
         tosave.append(d)
     scraperwiki.sqlite.save(['jaslid'], tosave, table_name='inventory')
     statusok("Station list has been saved")
