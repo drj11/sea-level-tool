@@ -47,6 +47,12 @@ def treat_lon(l):
 
     return treat_latlon(l)
 
+def ocean_colour(ocean):
+    """Pick a colour."""
+
+    d = dict(atlantic='red', pacific='blue', indian='white')
+    return d.get(ocean, 'grey')
+
 def scrape():
     statusok("Processing station list")
     ocean = None
@@ -80,6 +86,7 @@ def scrape():
         d['ocean'] = ocean
         d['lat'] = treat_lat(d['lat'])
         d['lon'] = treat_lon(d['lon'])
+        d['colour'] = ocean_colour(ocean)
         tosave.append(d)
     scraperwiki.sqlite.save(['jaslid'], tosave, table_name='inventory')
     statusok("Station list has been saved")
