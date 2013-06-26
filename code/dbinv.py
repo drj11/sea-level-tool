@@ -50,8 +50,8 @@ def treat_lon(l):
 def ocean_colour(ocean):
     """Pick a colour."""
 
-    d = dict(atlantic='red', pacific='blue', indian='white')
-    return d.get(ocean, 'grey')
+    d = dict(atlantic='dd0022', pacific='0000cc', indian='ccffdd')
+    return d.get(ocean, '555555')
 
 def scrape():
     statusok("Processing station list")
